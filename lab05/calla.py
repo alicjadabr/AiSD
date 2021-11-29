@@ -77,12 +77,11 @@ class BinaryTree:
 
     def traverse_pre_order(self, visit: Callable[[Any], None]):
         self.root.traverse_pre_order(visit)
+
     def show(self):
-        nodes = [55, 12, 14, 1, 18, 20, 22]
-        tree = build(nodes)
-        print(tree)
-
-
+        values = [55, 12, 14, 1, 18, 20, 22]
+        root = build(values)
+        print(root)
 
 
 tree = BinaryTree(55)
@@ -93,6 +92,7 @@ tree.root.left_child.add_right_child(18)
 tree.root.right_child.add_left_child(20)
 tree.root.right_child.add_right_child(22)
 tree.show()
+
 
 assert tree.root.value == 55
 assert tree.root.right_child.value == 14
