@@ -1,5 +1,4 @@
-from typing import Any, Callable
-from binarytree import build
+from typing import Any, Callable, List
 
 class BinaryNode:
     value: Any
@@ -78,24 +77,66 @@ class BinaryTree:
     def traverse_pre_order(self, visit: Callable[[Any], None]):
         self.root.traverse_pre_order(visit)
 
-    def show(self):
-        values = [55, 12, 14, 1, 18, 20, 22]
-        root = build(values)
-        print(root)
+    def print(self, root, space):
+        count = [11]
+        if (root == None):
+            return
+        space += count[0]
+        self.print(root.right_child, space)
+        print()
+        for i in range(count[0], space):
+            print(end=" ")
+        print(root.value)
+
+        self.print(root.left_child, space)
+
+    def print_tree(self, root):
+        self.print(root, 0)
 
 
-tree = BinaryTree(55)
-tree.root.add_left_child(12)
-tree.root.add_right_child(14)
-tree.root.left_child.add_left_child(1)
-tree.root.left_child.add_right_child(18)
-tree.root.right_child.add_left_child(20)
-tree.root.right_child.add_right_child(22)
-tree.show()
+
+def right_line(tree: BinaryTree) -> List[BinaryNode]:
+    root = tree.root
+    if root is None:
+        return
+
+    list = []
+    q = []
+    q.append(root)
+    while (len(q) != 0):
+        # n - liczba wezlow na danym poziomie
+        n = len(q)
+        # przechodzenie po kazdym wezle danego poziomu
+        for i in range(1, n+1):
+            curr = q[0]
+            q.pop(0)
+            # dodanie do listy skrajnego prawego elementu drzewa
+            if (i == n):
+                list.append(curr.value)
+            if (curr.left_child is not None):
+                q.append(curr.left_child)
+            if (curr.right_child is not None):
+                q.append(curr.right_child)
+    return list
 
 
-assert tree.root.value == 55
-assert tree.root.right_child.value == 14
+tree = BinaryTree(1)
+tree.root.add_left_child(2)
+tree.root.add_right_child(3)
+tree.root.left_child.add_left_child(4)
+tree.root.left_child.add_right_child(5)
+tree.root.right_child.add_right_child(7)
+tree.root.left_child.left_child.add_left_child(8)
+tree.root.left_child.left_child.add_right_child(9)
+tree.print_tree(tree.root)
+def print_traverse(node: BinaryNode):
+    print(node.value)
+#tree.traverse_pre_order(print_traverse)
+print(right_line(tree))
+
+
+assert tree.root.value == 1
+assert tree.root.right_child.value == 3
 assert tree.root.right_child.is_leaf() is False
-assert tree.root.left_child.left_child.value == 1
-assert tree.root.left_child.left_child.is_leaf() is True
+assert tree.root.left_child.left_child.value == 4
+assert tree.root.left_child.left_child.left_child.is_leaf() is True
